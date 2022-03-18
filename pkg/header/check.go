@@ -25,8 +25,6 @@ import (
 	"strings"
 
 	"github.com/apache/skywalking-eyes/internal/logger"
-	lcs "github.com/apache/skywalking-eyes/pkg/license"
-
 	"github.com/bmatcuk/doublestar/v2"
 )
 
@@ -128,18 +126,21 @@ func CheckFile(file string, config *ConfigHeader, result *Result) error {
 		return nil
 	}
 
-	content := lcs.NormalizeHeader(string(bs))
-	expected, pattern := config.NormalizedLicense(), config.NormalizedPattern()
-
-	if satisfy(content, config, expected, pattern) {
-		result.Succeed(file)
-	} else {
-		logger.Log.Debugln("Content is:", content)
-
-		result.Fail(file)
-	}
-
+	result.Fail(file)
 	return nil
+
+	//content := lcs.NormalizeHeader(string(bs))
+	//expected, pattern := config.NormalizedLicense(), config.NormalizedPattern()
+	//
+	//if satisfy(content, config, expected, pattern) {
+	//	result.Succeed(file)
+	//} else {
+	//	logger.Log.Debugln("Content is:", content)
+	//
+	//	result.Fail(file)
+	//}
+	//
+	//return nil
 }
 
 func satisfy(content string, config *ConfigHeader, license string, pattern *regexp.Regexp) bool {

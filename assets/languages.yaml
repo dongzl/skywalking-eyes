@@ -1927,7 +1927,7 @@ Go:
   codemirror_mode: go
   codemirror_mime_type: text/x-go
   language_id: 132
-  comment_style_id: DoubleSlash
+  comment_style_id: SlashAsterisk
 Golo:
   type: programming
   color: "#88562A"

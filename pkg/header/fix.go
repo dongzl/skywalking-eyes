@@ -60,8 +60,10 @@ func InsertComment(file string, style *comments.CommentStyle, config *ConfigHead
 	if err != nil {
 		return err
 	}
-
+	logger.Log.Infoln("Test content name-aa:" + file)
+	logger.Log.Infoln(fmt.Sprintf("%s:%s", "Test before content length-bb", len(content)))
 	content = rewriteContent(style, content, licenseHeader)
+	logger.Log.Infoln(fmt.Sprintf("%s:%s", "Test after content length-bb", len(content)))
 
 	if err := os.WriteFile(file, content, stat.Mode()); err != nil {
 		return err
@@ -74,6 +76,11 @@ func InsertComment(file string, style *comments.CommentStyle, config *ConfigHead
 
 func rewriteContent(style *comments.CommentStyle, content []byte, licenseHeader string) []byte {
 	if style.After == "" {
+		if content[2] == 10 {
+			content = append(content[len(licenseHeader)+21:])
+		} else {
+			content = append(content[len(licenseHeader)+18:])
+		}
 		return append([]byte(licenseHeader), content...)
 	}
 
@@ -84,6 +91,7 @@ func rewriteContent(style *comments.CommentStyle, content []byte, licenseHeader 
 		if style.EnsureAfter != "" {
 			return append([]byte(style.EnsureAfter+"\n"+licenseHeader+style.EnsureBefore), content...)
 		}
+		content := append(content[len([]byte(licenseHeader)):])
 		return append([]byte(licenseHeader), content...)
 	}
 
